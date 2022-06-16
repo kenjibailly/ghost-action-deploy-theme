@@ -18,8 +18,8 @@ const GhostAdminApi = require('@tryghost/admin-api');
                     params,
                     data,
                     headers,
-                    maxContentLength: 1000000000000000000000000000,
-                    maxBodyLength: 1000000000000000000000000000,
+                    maxContentLength: 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999,
+                    maxBodyLength: 9999999999999999999999999999999999999999999999999999999999999999999999999999999999999,
                     paramsSerializer(parameters) {
                         return Object.keys(parameters).reduce((parts, key) => {
                             const val = encodeURIComponent([].concat(parameters[key]).join(','));
