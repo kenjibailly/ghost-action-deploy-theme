@@ -9,7 +9,27 @@ const GhostAdminApi = require('@tryghost/admin-api');
         const api = new GhostAdminApi({
             url,
             key: core.getInput('api-key'),
-            version: 'canary'
+            version: 'canary',
+            // Custom makeRequest implementation
+            makeRequest({url, method, data, params = {}, headers = {}}) {
+                return axios({
+                    url,
+                    method,
+                    params,
+                    data,
+                    headers,
+                    maxContentLength: 1000000000,
+                    maxBodyLength: 1000000000,
+                    paramsSerializer(parameters) {
+                        return Object.keys(parameters).reduce((parts, key) => {
+                            const val = encodeURIComponent([].concat(parameters[key]).join(','));
+                            return parts.concat(`${key}=${val}`);
+                        }, []).join('&');
+                    }
+                }).then((res) => {
+                    return res.data;
+                });
+            }
         });
 
         const basePath = process.env.GITHUB_WORKSPACE;
